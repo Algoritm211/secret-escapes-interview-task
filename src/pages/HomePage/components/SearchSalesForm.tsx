@@ -49,7 +49,7 @@ export const SearchSalesForm: React.FC = () => {
                 disabled={submitting}
                 startIcon={submitting ? <HourglassBottomIcon /> : <SearchIcon />}
               >
-                Search places
+                Search place
               </Button>
             </Grid>
           </Box>
