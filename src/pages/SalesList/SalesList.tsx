@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { Box, Grid, SelectChangeEvent } from '@mui/material';
-import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { Layout } from '../../components/UI/Layout';
+import { Box, Grid, SelectChangeEvent, Skeleton } from '@mui/material';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { SALE_SEARCH, SaleSearchVars, SaleSearchData } from '../../GraphQL/queries/saleSearch';
 import SalesCard from './components/SalesCard';
 import { SalesPaginator } from './components/SalesPaginator';
+import { createLoaderBlocks } from './components/CardLoader';
 
 export const SalesList: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -21,10 +21,6 @@ export const SalesList: React.FC = () => {
       query: searchParams.get('query')!,
     },
   });
-
-  if (loading || !data) {
-    return <div>loading...</div>;
-  }
 
   const onChangePage = (event: React.ChangeEvent<unknown>, pageNum: number) => {
     navigate({
@@ -42,34 +38,37 @@ export const SalesList: React.FC = () => {
     setLimit(+event.target.value);
   };
 
-  const cardsBlock = data.saleSearch.sales.map((sale) => {
+  const cardsBlock = data?.saleSearch.sales.map((sale) => {
     return (
       <Grid item key={sale.id}>
-        <Link to={`/sale/${sale.id}`}>
-          <SalesCard
-            imgUrl={sale.photos[0].url}
-            destination={sale.editorial.destinationName}
-            title={sale.editorial.title}
-          />
-        </Link>
+        <SalesCard
+          saleId={sale.id}
+          imgUrl={sale.photos[0].url}
+          destination={sale.editorial.destinationName}
+          title={sale.editorial.title}
+        />
       </Grid>
     );
   });
 
   return (
-    <Layout>
+    <>
       <Grid justifyContent="center" container gap={2}>
-        {cardsBlock}
+        {loading ? createLoaderBlocks(limit) : cardsBlock}
       </Grid>
       <Box sx={{ py: 3 }} display="flex" justifyContent="center" alignItems="center" gap={2} flexWrap="wrap">
-        <SalesPaginator
-          page={page}
-          limit={limit}
-          summaryCount={data.saleSearch.resultCount}
-          onChangePage={onChangePage}
-          onLimitChange={onLimitChange}
-        />
+        {loading ? (
+          <Skeleton variant="text" width={210} />
+        ) : (
+          <SalesPaginator
+            page={page}
+            limit={limit}
+            summaryCount={data?.saleSearch.resultCount!}
+            onChangePage={onChangePage}
+            onLimitChange={onLimitChange}
+          />
+        )}
       </Box>
-    </Layout>
+    </>
   );
 };

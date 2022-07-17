@@ -1,16 +1,18 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { HomePage } from './pages/HomePage/HomePage';
-import { SalesList } from './pages/SalesList/SalesList';
+import { HomePage } from './pages/HomePage';
+import { Sale } from './pages/Sale';
+import { SalesList } from './pages/SalesList';
+import { Layout } from './components/UI/Layout';
 
 const App: React.FC = () => (
-  <div className="App">
+  <Layout>
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/search" element={<SalesList />} />
-      <Route path="/sale/:id" element={<SalesList />} />
+      <Route path="/sale/:id" element={<Sale />} />
     </Routes>
-  </div>
+  </Layout>
 );
 
 export default App;

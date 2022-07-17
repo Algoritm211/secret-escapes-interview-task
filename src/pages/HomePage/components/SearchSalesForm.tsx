@@ -1,7 +1,7 @@
 import { Box, Button, Grid, TextField } from '@mui/material';
 import React from 'react';
 import { Field, Form } from 'react-final-form';
-import AddIcon from '@mui/icons-material/Add';
+import SearchIcon from '@mui/icons-material/Search';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import { useNavigate } from 'react-router-dom';
 import { composeValidators, requiredValidator } from '../../../components/shared/forms/validators';
@@ -47,9 +47,9 @@ export const SearchSalesForm: React.FC = () => {
                 variant="contained"
                 type="submit"
                 disabled={submitting}
-                startIcon={submitting ? <HourglassBottomIcon /> : <AddIcon />}
+                startIcon={submitting ? <HourglassBottomIcon /> : <SearchIcon />}
               >
-                Add campaign
+                Search places
               </Button>
             </Grid>
           </Box>
